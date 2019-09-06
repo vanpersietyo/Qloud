@@ -1,3 +1,4 @@
+.
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 // use namespace
@@ -35,11 +36,12 @@ class Key extends REST_Controller {
         $key = $this->_generate_key();
 
         // If no key level provided, provide a generic key
-        $level = $this->put('level') ? $this->put('level') : 1;
-        $ignore_limits = ctype_digit($this->put('ignore_limits')) ? (int) $this->put('ignore_limits') : 1;
+        $level 			= $this->put('level') ? $this->put('level') : 1;
+        $user_id		= $this->put('user_id') ? $this->put('user_id') : 1;
+        $ignore_limits 	= ctype_digit($this->put('ignore_limits')) ? (int) $this->put('ignore_limits') : 1;
 
         // Insert the new key
-        if ($this->_insert_key($key, ['level' => $level, 'ignore_limits' => $ignore_limits]))
+        if ($this->_insert_key($key, ['level' => $level, 'ignore_limits' => $ignore_limits,'user_id' => $user_id]))
         {
             $this->response([
                 'status' => TRUE,

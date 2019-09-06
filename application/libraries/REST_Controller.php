@@ -1,5 +1,4 @@
 <?php
-
 namespace Restserver\Libraries;
 
 use Exception;
@@ -1895,7 +1894,21 @@ abstract class REST_Controller extends \CI_Controller {
 
         $auth_source = strtolower($this->config->item('auth_source'));
         $rest_auth = strtolower($this->config->item('rest_auth'));
-        $valid_logins = $this->config->item('rest_valid_logins');
+		if(in_array('api_user',$this->db->list_tables())){
+			$user = $this->db->get('api_user')->result();
+			if($user){
+				$data = [];
+				foreach ($user as $item)
+				{
+					$data[$item->username] = $item->password;
+				}
+				$valid_logins = $data;
+			}else{
+				$valid_logins = $this->config->item('rest_valid_logins');
+			}
+		}else{
+        	$valid_logins = $this->config->item('rest_valid_logins');
+		};
 
         if ( ! $this->config->item('auth_source') && $rest_auth === 'digest')
         {

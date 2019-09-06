@@ -14,6 +14,13 @@ class Generate extends CI_Controller
 			echo '</a>';
 			echo '<br>';
 		}
+		$user = $this->db->get('api_user')->result();
+		$data = [];
+		foreach ($user as $item)
+		{
+			$data[$item->username] = $item->password;
+		}
+		var_dump($data);
 	}
 
     public function tabel($table = null){
@@ -51,7 +58,7 @@ class Generate extends CI_Controller
 
     }
 
-    public function tes($id,$username){
+    public function tes($id = null,$username = null){
 //		$api_key = [
 //			'api_auth_key' => 'oows0g8gck0occkscwcg84g8800go884c8o84084'
 //		];
@@ -79,46 +86,8 @@ class Generate extends CI_Controller
 //		Conversion::show_debug($delete);
 //		$this->load->config('rest');
 //		Conversion::show_debug($this->config->item('rest_valid_logins'));
-
-
-		$curl = curl_init();
-
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => "http://localhost/project/qloud/master/customer/update",
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => "",
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 30,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => "PUT",
-			CURLOPT_POSTFIELDS => "ID_APPS=1&KD_CUSTOMER=tes1212121212&NM_CUSTOMER=2&ALAMAT=1&KOTA=2&PROVINSI=2&NEGARA=3&SEKTOR=4&HP=5&TELP=6&TELP2=7&KETERANGAN=8&ST_DATA=9&ST_CUSTOMER=1&OPERATOR=2&TGL_BUAT=2019-09-05%2018%3A00%3A00&ID_CUSTOMER=1",
-			CURLOPT_HTTPHEADER => array(
-				"Accept: */*",
-				"Accept-Encoding: gzip, deflate",
-				"Cache-Control: no-cache",
-				"Connection: keep-alive",
-				"Content-Length: 211",
-				"Content-Type: application/x-www-form-urlencoded",
-				"Cookie: ci_session=egkej1f7t7dvo43m129o6p9lpjevnm3b",
-				"Host: localhost",
-				"Postman-Token: e0a62c9f-5701-4194-9468-12f5e47d0168,b5c6ac5b-8ad6-4f49-b38b-e6953734082e",
-				"User-Agent: PostmanRuntime/7.15.2",
-				"api_auth_key: oows0g8gck0occkscwcg84g8800go884c8o84084",
-				"cache-control: no-cache"
-			),
-		));
-
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
-
-		curl_close($curl);
-
-		if ($err) {
-			echo "cURL Error #:" . $err;
-		} else {
-			echo $response;
-		}
-
+		$this->load->config('rest');
+		var_dump($this->config->item('rest_enable_keys'));
 	}
 
 }
