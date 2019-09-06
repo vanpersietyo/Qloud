@@ -124,26 +124,26 @@ class Customer extends REST_Controller {
 
 	}
 
-	public function update_put(){
+	public function update_post(){
 		$data = [
-			M_customer::ID_APPS			=> $this->put(M_customer::ID_APPS),
-			M_customer::KD_CUSTOMER 	=> $this->put(M_customer::KD_CUSTOMER),
-			M_customer::NM_CUSTOMER		=> $this->put(M_customer::NM_CUSTOMER),
-			M_customer::ALAMAT			=> $this->put(M_customer::ALAMAT),
-			M_customer::KOTA			=> $this->put(M_customer::KOTA),
-			M_customer::SEKTOR			=> $this->put(M_customer::SEKTOR),
-			M_customer::HP				=> $this->put(M_customer::HP),
-			M_customer::TELP			=> $this->put(M_customer::TELP),
-			M_customer::TELP2			=> $this->put(M_customer::TELP2),
-			M_customer::NEGARA			=> $this->put(M_customer::NEGARA),
-			M_customer::PROVINSI		=> $this->put(M_customer::PROVINSI),
-			M_customer::KETERANGAN		=> $this->put(M_customer::KETERANGAN),
-			M_customer::ST_CUSTOMER		=> $this->put(M_customer::ST_CUSTOMER),
-			M_customer::ST_DATA			=> $this->put(M_customer::ST_DATA),
-			M_customer::OPERATOR		=> $this->put(M_customer::OPERATOR),
-			M_customer::TGL_BUAT		=> $this->put(M_customer::TGL_BUAT),
+			M_customer::ID_APPS			=> $this->post(M_customer::ID_APPS),
+			M_customer::KD_CUSTOMER 	=> $this->post(M_customer::KD_CUSTOMER),
+			M_customer::NM_CUSTOMER		=> $this->post(M_customer::NM_CUSTOMER),
+			M_customer::ALAMAT			=> $this->post(M_customer::ALAMAT),
+			M_customer::KOTA			=> $this->post(M_customer::KOTA),
+			M_customer::SEKTOR			=> $this->post(M_customer::SEKTOR),
+			M_customer::HP				=> $this->post(M_customer::HP),
+			M_customer::TELP			=> $this->post(M_customer::TELP),
+			M_customer::TELP2			=> $this->post(M_customer::TELP2),
+			M_customer::NEGARA			=> $this->post(M_customer::NEGARA),
+			M_customer::PROVINSI		=> $this->post(M_customer::PROVINSI),
+			M_customer::KETERANGAN		=> $this->post(M_customer::KETERANGAN),
+			M_customer::ST_CUSTOMER		=> $this->post(M_customer::ST_CUSTOMER),
+			M_customer::ST_DATA			=> $this->post(M_customer::ST_DATA),
+			M_customer::OPERATOR		=> $this->post(M_customer::OPERATOR),
+			M_customer::TGL_BUAT		=> $this->post(M_customer::TGL_BUAT),
 		];
-		$id = $this->put(M_customer::ID_CUSTOMER);
+		$id = $this->post(M_customer::ID_CUSTOMER);
 		$this->_validate_update();
 		$update = $this->M_customer->update($id,$data);
 		if(!$update){
@@ -178,18 +178,52 @@ class Customer extends REST_Controller {
 		$data = $data['inputerror'] = $data['notiferror'] = []; //inisialisasi
 		$data['status']	= TRUE; // TRUE = validation lolos | FALSE = validation gagal
 
+		//validasi input
+
+		//form validation
+		$this->form_validation->set_rules(M_customer::ID_CUSTOMER, 'ID Customer', 'required|trim');
+		$this->form_validation->set_rules(M_customer::ID_APPS, 'ID Aplikasi', 'required|trim');
+		$this->form_validation->set_rules(M_customer::KD_CUSTOMER, 'Kode Customer', 'required|trim');
+		$this->form_validation->set_rules(M_customer::NM_CUSTOMER, 'Nama Customer', 'required|trim');
+
+		if ($this->form_validation->run() == FALSE){
+			$data['status'] = FALSE;
+			foreach ($this->form_validation->error_array() as $dtl => $value) {
+				$data['inputerror'][]   = $dtl;
+				$data['notiferror'][]   = $value;
+			}
+		}
+		$id 		= $this->post(M_customer::ID_CUSTOMER);
+		$kode		= $this->post(M_customer::KD_CUSTOMER);
+		$customer 	= $this->M_customer->get_by_id($id);
+		if($customer){
+			$exist = $this->M_customer->find(
+				[
+					M_customer::KD_CUSTOMER 		=> $kode,
+					M_customer::ID_CUSTOMER." !=" 	=> $customer->ID_CUSTOMER,
+				]
+			);
+			if($exist){
+				$data['inputerror'][]   = M_customer::KD_CUSTOMER;
+				$data['notiferror'][]   = 'Kode Customer Sudah Ada';
+				$data['status']         = FALSE;
+			}
+		}else{
+			if(empty($this->post(M_customer::ID_CUSTOMER))){
+				$data['inputerror'][]   = M_customer::ID_CUSTOMER;
+				$data['notiferror'][]   = 'ID Customer Tidak Ditemukan';
+				$data['status']         = FALSE;
+			}
+
+		}
+
 
 		// Custom validation
-		if(empty($this->put(M_customer::ID_CUSTOMER))){
-			$data['inputerror'][]   = M_customer::ID_CUSTOMER;
-			$data['notiferror'][]   = 'ID Customer Harus Diisi';
-			$data['status']         = FALSE;
-		}
-		if(empty($this->put(M_customer::KD_CUSTOMER))){
-			$data['inputerror'][]   = M_customer::KD_CUSTOMER;
-			$data['notiferror'][]   = 'Kode Customer Harus Diisi';
-			$data['status']         = FALSE;
-		}
+//		if(empty($this->post(M_customer::ID_CUSTOMER))){
+//			$data['inputerror'][]   = M_customer::ID_CUSTOMER;
+//			$data['notiferror'][]   = 'ID Customer Harus Diisi';
+//			$data['status']         = FALSE;
+//		}
 
 		if(!$data['status'])
 		{
