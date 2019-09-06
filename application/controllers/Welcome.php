@@ -29,10 +29,13 @@ class Welcome extends CI_Controller {
 	}
 
 	public function tes_unirest(){
+		$headers	= array('Accept' => 'application/json');
+		$query 		= array('name' => 'Adhitya', 'email' => 'barcelonitas.adhyt@gmail.com');
 		$url		= site_url('api/user/users');
-		$request 	= Request::get($url);
+
+		$response 	= Request::post($url, $headers, $query);
 		echo "<pre>";
-		print_r ($request->body);
+		print_r ($response->body);
 		echo "</pre>";
 	}
 

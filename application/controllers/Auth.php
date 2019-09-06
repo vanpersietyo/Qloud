@@ -2,57 +2,47 @@
 
 // use namespace
 use Restserver\Libraries\REST_Controller;
-
-/**
- * Keys Controller
- * This is a basic Key Management REST controller to make and delete keys
- *
- * @package         CodeIgniter
- * @subpackage      Rest Server
- * @category        Controller
- * @author          Phil Sturgeon, Chris Kacerguis
- * @license         MIT
- * @link            https://github.com/chriskacerguis/codeigniter-restserver
- */
-class Key extends REST_Controller {
+class Auth extends REST_Controller {
 
     protected $methods = [
-            'index_put' 		=> ['level' => 10, 'limit' => 10],
-            'index_delete' 		=> ['level' => 10],
-            'level_post' 		=> ['level' => 10],
-            'regenerate_post' 	=> ['level' => 10],
+            'index_post' => ['level' => 10, 'limit' => 10],
+            'index_delete' => ['level' => 10],
+            'level_post' => ['level' => 10],
+            'regenerate_post' => ['level' => 10],
         ];
+		function __construct(){
+			parent::__construct();
+	    $this->load->model('MASTER/M_USER', 'MASTER_USER');
+		}
 
-    /**
-     * Insert a key into the database
-     *
-     * @access public
-     * @return void
-     */
-    public function index_put()
-    {
-        // Build a new key
-        $key = $this->_generate_key();
+    public function index_post(){
+      $expired=date('Y-m-d H:i:s',time()+(60*60));
 
-        // If no key level provided, provide a generic key
-        $level = $this->put('level') ? $this->put('level') : 1;
-        $ignore_limits = ctype_digit($this->put('ignore_limits')) ? (int) $this->put('ignore_limits') : 1;
+			$username=$this->post('username');
+			$password=$this->post('password');
+				if ($this->MASTER_USER->CEK_USER($username,$password)==FALSE) {
+					$this->response([
+							'status' => FALSE,
+							'message' => 'Could Not Authorized'
+					], REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+				}else {
+					$key = $this->_generate_key();
+					$update_user = array('TOKEN' => $key,'EXPIRED_TOKEN' => $expired,'LAST_GET_TOKEN' => date('Y-m-d H:i:s'));
+          $update=$this->MASTER_USER->UPDATE_TOKEN(array('username' => $username), $update_user);
 
-        // Insert the new key
-        if ($this->_insert_key($key, ['level' => $level, 'ignore_limits' => $ignore_limits]))
-        {
-            $this->response([
-                'status' => TRUE,
-                'key' => $key
-            ], REST_Controller::HTTP_CREATED); // CREATED (201) being the HTTP response code
-        }
-        else
-        {
-            $this->response([
-                'status' => FALSE,
-                'message' => 'Could not save the key'
-            ], REST_Controller::HTTP_INTERNAL_SERVER_ERROR); // INTERNAL_SERVER_ERROR (500) being the HTTP response code
-        }
+          if ($update==TRUE) {
+						    $this->response([
+						        'status' => TRUE,
+						        'key' => $key
+						    ], REST_Controller::HTTP_CREATED); // CREATED (201) being the HTTP response code
+					}else {
+						$this->response([
+								'status' => FALSE,
+								'message' => 'Failed Authorized'
+						], REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+					}
+				}
+
     }
 
     /**

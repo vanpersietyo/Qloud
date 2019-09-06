@@ -89,90 +89,10 @@
  * Custom Models
  *
  * //Master
- * @property M_login            				$M_login
- * @property M_user             				$M_user
- * @property M_customer         				$M_customer
- * @property M_supplier         				$M_supplier
- * @property M_satuan_produk   					$M_satuan_produk
- * @property M_produk   						$M_produk
- * @property M_kategori_produk   				$M_kategori_produk
- * @property M_set_satuan_product   			$M_set_satuan_product
- * @property M_set_dtl_satuan_product   		$M_set_dtl_satuan_product
- * @property M_master_harga         			$M_master_harga
- * @property M_list_harga           			$M_list_harga
- * @property M_v_konversi_satuan    			$M_v_konversi_satuan
- * @property M_ukuran_produk        			$M_ukuran_produk
- * @property M_level 							$M_level
- * @property M_bank		                        $M_bank
- * @property M_profile		                    $M_profile
- * @property M_v_product		                $M_v_product
- * @property M_v_list_harga_produk		        $M_v_list_harga_produk
- * @property M_user                             $m_user
- * @property M_v_metode_pembayaran              $M_v_metode_pembayaran
- *
- *
- * //config
- * @property M_config 							$M_config
- * @property M_menutree 						$M_menutree
- * @property M_menutree_user 					$M_menutree_user
- * @property M_log								$M_log
-
- * Transaksi
- *
- * //PEMBELIAN
- * @property M_trans_pembelian_a    			$M_trans_pembelian_a
- * @property M_trans_pembelian_b    			$M_trans_pembelian_b
- * @property M_v_detail_transaksi_pembelian    	$M_v_detail_transaksi_pembelian
- * @property M_trans_pembayaran_pembelian		$M_trans_pembayaran_pembelian
- * @property M_v_header_transaksi_pembelian		$M_v_header_transaksi_pembelian
- * @property M_v_histori_harga_pembelian		$M_v_histori_harga_pembelian
- *
- * //PEENAMBAHAN
- * @property M_trans_penambahan_a 				$M_trans_penambahan_a
- * @property M_trans_penambahan_b 				$M_trans_penambahan_b
- *
- * //PENJUALAN
- * @property M_trans_penjualan_a				$M_trans_penjualan_a
- * @property M_trans_penjualan_b				$M_trans_penjualan_b
- * @property M_trans_pembayaran_penjualan		$M_trans_pembayaran_penjualan
- * @property M_v_header_trans_penjualan		    $M_v_header_trans_penjualan
- * @property M_v_trans_pembayaran_penjualan		$M_v_trans_pembayaran_penjualan
- * @property M_v_detail_trans_penjualan         $M_v_detail_trans_penjualan
- *
- * //Konsinyasi
- * @property M_trans_konsinyasi_a_hdr 			$M_trans_konsinyasi_a_hdr
- * @property M_trans_konsinyasi_b_dtl 			$M_trans_konsinyasi_b_dtl
- * @property M_v_trans_konsinyasi_pembelian 	$M_v_trans_konsinyasi_pembelian
- * @property M_v_trans_konsinyasi_b_dtl 	    $M_v_trans_konsinyasi_b_dtl
- * @property M_v_trans_konsinyasi_e_stok_final 	$M_v_trans_konsinyasi_e_stok_final
- *
- *
- * // Opname
- * @property M_trans_opname_a         			$M_trans_opname_a
- * @property M_trans_opname_b         			$M_trans_opname_b
- * @property M_v_trans_opname_b_detail          $M_v_trans_opname_b_detail
- *
- * //STOK
- * @property M_v_stok_product         			$M_v_stok_product
- * @property M_v_list_stok_harga_konversi_produk $M_v_list_stok_harga_konversi_produk
- *
- * //Retur
- * @property M_trans_retur_a_hdr         		$M_trans_retur_a_hdr
- * @property M_trans_retur_b_dtl         		$M_trans_retur_b_dtl
- * @property M_trans_retur_c_pembayaran         $M_trans_retur_c_pembayaran
- *
- * //Retur Penjualan
- * @property M_v_trans_retur_penjualan_header 	$M_v_trans_retur_penjualan_header
- * @property M_v_trans_retur_penjualan_detail 	$M_v_trans_retur_penjualan_detail
- *
- * Report
- * @property M_stok 							$M_stok
- *
- * Report
- * @property M_dashboard 						$M_dashboard
+ * @property M_user         	$M_user
+ * @property M_customer			$M_customer
 
  * Custom  Libraries
- * @property Unirest        	$unirest
  * @property Conversion         $conversion
  *
  */
